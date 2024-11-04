@@ -1,5 +1,5 @@
 {
-  "name": "pricewise",
+  "name": "Price-Track",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+    
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
