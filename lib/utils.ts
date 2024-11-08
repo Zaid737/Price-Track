@@ -14,35 +14,33 @@ export function extractPrice(...elements: any) {
   for (const element of elements) {
     const priceText = element.text().trim();
 
-    if(priceText) {
+    if (priceText) {
+      // Clean the price text to remove any unwanted characters
       const cleanPrice = priceText.replace(/[^\d.]/g, '');
+      // Convert the cleaned price to a float
+      const priceNumber = parseFloat(cleanPrice);
 
-      let firstPrice; 
-
-      if (cleanPrice) {
-        firstPrice = cleanPrice.match(/\d+\.\d{2}/)?.[0];
-      } 
-
-      return firstPrice || cleanPrice;
+      if (!isNaN(priceNumber)) {
+        return priceNumber;
+      }
     }
   }
 
-  return '';
+  return null; // Return null if no valid price found
 }
 
 // Extracts and returns the currency symbol from an element.
 export function extractCurrency(element: any) {
-  const currencyText = element.text().trim().slice(0, 1);
-  return currencyText ? currencyText : "";
+  // Assuming all prices are in Indian Rupees for Flipkart
+  return '₹';
 }
 
-// Extracts description from two possible elements from amazon
+// Extracts description from possible elements on Flipkart
 export function extractDescription($: any) {
-  // these are possible elements holding description of the product
+  // Possible elements holding the description of the product
   const selectors = [
-    ".a-unordered-list .a-list-item",
-    ".a-expander-content p",
-    // Add more selectors here if needed
+    "div.spec-body", 
+    
   ];
 
   for (const selector of selectors) {
@@ -56,32 +54,16 @@ export function extractDescription($: any) {
     }
   }
 
-  // If no matching elements were found, return an empty string
+ 
   return "";
 }
 
 export function getHighestPrice(priceList: PriceHistoryItem[]) {
-  let highestPrice = priceList[0];
-
-  for (let i = 0; i < priceList.length; i++) {
-    if (priceList[i].price > highestPrice.price) {
-      highestPrice = priceList[i];
-    }
-  }
-
-  return highestPrice.price;
+  return Math.max(...priceList.map(item => item.price)); // Simplified using Math.max
 }
 
 export function getLowestPrice(priceList: PriceHistoryItem[]) {
-  let lowestPrice = priceList[0];
-
-  for (let i = 0; i < priceList.length; i++) {
-    if (priceList[i].price < lowestPrice.price) {
-      lowestPrice = priceList[i];
-    }
-  }
-
-  return lowestPrice.price;
+  return Math.min(...priceList.map(item => item.price)); // Simplified using Math.min
 }
 
 export function getAveragePrice(priceList: PriceHistoryItem[]) {

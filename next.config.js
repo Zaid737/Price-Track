@@ -1,12 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverActions: true,
-    serverComponentsExternalPackages: ['mongoose']
+    serverComponentsExternalPackages: ['mongoose'],
   },
   images: {
-    domains: ['m.media-amazon.com']
-  }
-}
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'm.media-amazon.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.snapdeal.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.sdlcdn.com', // Allow all subdomains of sdlcdn.com
+        pathname: '/**',
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

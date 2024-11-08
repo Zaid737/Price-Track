@@ -1,5 +1,6 @@
 export type PriceHistoryItem = {
   price: number;
+  date: string; // Optional, to track when each price was recorded
 };
 
 export type User = {
@@ -23,8 +24,9 @@ export type Product = {
   category: string;
   reviewsCount: number;
   stars: number;
-  isOutOfStock: Boolean;
+  isOutOfStock: boolean;
   users?: User[];
+  platform?: "amazon" | "snapdeal"; // Added to distinguish products by platform
 };
 
 export type NotificationType =
@@ -41,4 +43,7 @@ export type EmailContent = {
 export type EmailProductInfo = {
   title: string;
   url: string;
+  currentPrice: number; // Include latest price in the email info
+  discountRate?: number; // Optional, only included if a discount is available
+  platform: "amazon" | "snapdeal"; // Include platform in email content
 };

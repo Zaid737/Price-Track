@@ -44,6 +44,9 @@ export async function scrapeAmazonProduct(url: string) {
       $('.a-size-base.a-color-price')
     );
 
+    const averagePrice = currentPrice && originalPrice ? 
+    (currentPrice + originalPrice) / 2 : (currentPrice || originalPrice || 0);
+
     const outOfStock = $('#availability span').text().trim().toLowerCase() === 'currently unavailable';
 
     const images = 
@@ -57,6 +60,9 @@ export async function scrapeAmazonProduct(url: string) {
     const discountRate = $('.savingsPercentage').text().replace(/[-%]/g, "");
 
     const description = extractDescription($)
+
+    const lowestPrice = currentPrice ? Math.min(currentPrice, originalPrice || currentPrice) : (originalPrice || 0);
+    const highestPrice = originalPrice ? Math.max(originalPrice, currentPrice || originalPrice) : (currentPrice || 0);
 
     // Construct data object with scraped information
     const data = {
@@ -73,9 +79,9 @@ export async function scrapeAmazonProduct(url: string) {
       stars: 4.5,
       isOutOfStock: outOfStock,
       description,
-      lowestPrice: Number(currentPrice) || Number(originalPrice),
-      highestPrice: Number(originalPrice) || Number(currentPrice),
-      averagePrice: Number(currentPrice) || Number(originalPrice),
+      lowestPrice: Number(lowestPrice) ,
+      highestPrice: Number(highestPrice) ,
+      averagePrice: Number(averagePrice),
     }
 
     return data;

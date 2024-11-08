@@ -1,11 +1,13 @@
-import HeroCarousel from "@/components/HeroCarousel"
-import Searchbar from "@/components/Searchbar"
-import Image from "next/image"
-import { getAllProducts } from "@/lib/actions"
-import ProductCard from "@/components/ProductCard"
+import HeroCarousel from "@/components/HeroCarousel";
+import Searchbar from "@/components/Searchbar";
+import Image from "next/image";
+import { getAllProducts } from "@/lib/actions";
+import ProductCard from "@/components/ProductCard";
+import { Product } from "@/types"; // Assuming you have a Product type defined in types.ts
 
 const Home = async () => {
-  const allProducts = await getAllProducts();
+  // Fetch all products, including those from Amazon and Snapdeal
+  const allProducts: Product[] = await getAllProducts();
 
   return (
     <>
@@ -39,16 +41,20 @@ const Home = async () => {
       </section>
 
       <section className="trending-section">
-        <h2 className="section-text">Trending</h2>
+        <h2 className="section-text">Products</h2>
 
         <div className="flex flex-wrap gap-x-8 gap-y-16">
           {allProducts?.map((product) => (
-            <ProductCard key={product._id} product={product} />
+            <ProductCard 
+              key={product._id} 
+              product={product} 
+              source={product.source} // Adding source prop to indicate Amazon or Snapdeal
+            />
           ))}
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
